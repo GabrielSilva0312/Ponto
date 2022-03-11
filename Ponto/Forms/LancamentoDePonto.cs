@@ -1,4 +1,5 @@
-﻿using Ponto.Infra.Repository;
+﻿using Ponto.Infra;
+using Ponto.Infra.Repository;
 using Ponto.Infra.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -26,133 +27,143 @@ namespace Ponto
 
         private void LancamentoDePonto_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            try
             {
-                Close();
+                using (var Serv = new AppServiceFactory())
+                {
+                    if (e.KeyCode == Keys.Escape)
+                    {
+                        Close();
+                    }
+
+                    if (e.KeyCode == Keys.F2)
+                    {
+                        //new CadastrodeColaborador().ShowDialog();
+                    }
+
+                    if (e.KeyCode == Keys.Enter)
+                    {
+                        string Senha = txtSenha.Text.Trim();
+                        var Nome = txtNome.Text.Trim();
+                        var Justificativa = txtJustificativaEntrada.Text.Trim();
+                        DateTime Data = DateTime.Now;
+
+                        if (string.IsNullOrWhiteSpace(Senha))
+                        {
+                            MessageBox.Show("Informe a Senha");
+                            return;
+                        }
+
+                        bool UsuarioEncotrado = Serv.UsuarioRep().RetornarSeUsuarioFoiEncontrado(Senha);
+
+                        if (UsuarioEncotrado == false)
+                        {
+                            MessageBox.Show("Usuário não Encontrado", "Aviso");
+                            LimparCampos();
+                            txtSenha.Focus();
+                            return;
+                        }
+                        else
+                        {
+                            var DadosUsuario = Serv.UsuarioRep().RetornarDadosUsuario(Senha);
+                            txtNome.Text = DadosUsuario.Nome;
+                        }
+
+                        if (UsuarioEncotrado == true)
+                        {
+                            if (!UsuarioEncotrado)
+                            {
+                                HabilitarCamposEntrada(true);
+                                txtJustificativaEntrada.Focus();
+                                return;
+                            }
+
+                            var DadosPonto = Serv.PontoRep().RetornarSeJaFoiLancado(Senha);
+
+                            if (DadosPonto == null)
+                            {
+                                HabilitarCamposEntrada(true);
+                                txtJustificativaEntrada.Focus();
+                                DateTime HoraAtualServidor = Serv.PontoRep().RetonarHoraServidor();
+                                DataEntrada.Text = HoraAtualServidor.ToString("HH:mm");
+                                return;
+                            }
+
+                            if (UsuarioEncotrado && DadosPonto != null && DadosPonto.DataSaidaAlmoco == null)
+                            {
+                                txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
+                                DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
+                                HabilitarCamposSaidaAlmoco(true);
+                                txtJustificativaSaidaAlmoco.Focus();
+                                DateTime HoraAtualServidor = Serv.PontoRep().RetonarHoraServidor();
+                                DataSaidaAlmoco.Text = HoraAtualServidor.ToString("HH:mm");
+                                return;
+                            }
+                            else if (UsuarioEncotrado && DadosPonto != null && DadosPonto.DataSaidaAlmoco != null && DadosPonto.DataEntradaAlmoco == null)
+                            {
+                                txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
+                                txtJustificativaSaidaAlmoco.Text = DadosPonto.JustificativaSaidaAlmoco;
+                                DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
+                                DataSaidaAlmoco.Text = DadosPonto.DataSaidaAlmoco.Value.ToString("HH:mm");
+                                HabilitarCamposEntradaAlmoco(true);
+                                txtJustificativaEntradaAlmoco.Focus();
+                                DateTime HoraAtualServidor = Serv.PontoRep().RetonarHoraServidor();
+                                DataEntradaAlmoco.Text = HoraAtualServidor.ToString("HH:mm");
+                                return;
+                            }
+                            else if (UsuarioEncotrado && DadosPonto != null && DadosPonto.DataSaidaAlmoco != null && DadosPonto.DataEntradaAlmoco != null && DadosPonto.DataSaida == null)
+                            {
+                                txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
+                                txtJustificativaSaidaAlmoco.Text = DadosPonto.JustificativaSaidaAlmoco;
+                                txtJustificativaEntradaAlmoco.Text = DadosPonto.JustificativaEntradaAlmoco;
+                                DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
+                                DataSaidaAlmoco.Text = DadosPonto.DataSaidaAlmoco.Value.ToString("HH:mm");
+                                DataEntradaAlmoco.Text = DadosPonto.DataEntradaAlmoco.Value.ToString("HH:mm");
+                                HabilitarCamposSaida(true);
+                                txtJustificativaSaida.Focus();
+                                DateTime HoraAtualServidor = Serv.PontoRep().RetonarHoraServidor();
+                                DataSaida.Text = HoraAtualServidor.ToString("HH:mm");
+                                return;
+                            }
+                            else
+                            {
+                                txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
+                                txtJustificativaSaidaAlmoco.Text = DadosPonto.JustificativaSaidaAlmoco;
+                                txtJustificativaEntradaAlmoco.Text = DadosPonto.JustificativaEntradaAlmoco;
+                                txtJustificativaSaida.Text = DadosPonto.JustificativaSaida;
+                                DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
+                                DataSaidaAlmoco.Text = DadosPonto.DataSaidaAlmoco.Value.ToString("HH:mm");
+                                DataEntradaAlmoco.Text = DadosPonto.DataEntradaAlmoco.Value.ToString("HH:mm");
+                                DataSaida.Text = DadosPonto.DataSaida.Value.ToString("HH:mm");
+                                HabilitarCamposFinal(true);
+                                MessageBox.Show("Ponto já lançado", "Aviso");
+                                txtNome.Clear();
+                                txtSenha.Clear();
+                                txtJustificativaEntrada.Clear();
+                                txtJustificativaSaidaAlmoco.Clear();
+                                txtJustificativaEntradaAlmoco.Clear();
+                                txtJustificativaSaida.Clear();
+                                DataEntrada.Clear();
+                                DataEntradaAlmoco.Clear();
+                                DataSaidaAlmoco.Clear();
+                                DataSaida.Clear();
+                                txtSenha.Focus();
+                                HabilitarCamposRetorno(true);
+                                return;
+                            }
+                        }
+                    }
+
+                    if (e.KeyCode == Keys.F10)
+                    {
+                        cmdConfirmar.PerformClick();
+                    }
+                }
             }
-
-            if (e.KeyCode == Keys.F2)
+            catch (Exception pEx)
             {
-                //new CadastrodeColaborador().ShowDialog();
-            }
-
-            if (e.KeyCode == Keys.Enter)
-            {
-                var UsuarioRep = new UsuarioRepository();
-                string Senha = txtSenha.Text.Trim();
-                var Nome = txtNome.Text.Trim();
-                var Justificativa = txtJustificativaEntrada.Text.Trim();
-                DateTime Data = DateTime.Now;
-                bool UsuarioEncotrado = UsuarioRep.RetornarSeUsuarioFoiEncontrado(Senha);
-
-                if (UsuarioEncotrado == false)
-                {
-                    MessageBox.Show("Usuário não Encontrado", "Aviso");
-                    LimparCampos();
-                    txtSenha.Focus();
-                    return;
-                }
-                else
-                {
-                    var DadosUsuario = UsuarioRep.RetornarDadosUsuario(Senha);
-                    txtNome.Text = DadosUsuario.Nome;
-                }
-
-                if (string.IsNullOrWhiteSpace(Senha))
-                {
-                    MessageBox.Show("Informe a Senha");
-                    return;
-                }
-
-                if (UsuarioEncotrado == true)
-                {
-                    /*var DadosPonto = ""new PontoRepository().RetornarSeJaFoiLancado(Senha);
-
-                    if (UsuarioEncotrado == false)
-                    {
-                        HabilitarCamposEntrada(true);
-                        txtJustificativaEntrada.Focus();
-                        return;
-                    }
-
-                    if (DadosPonto == null)
-                    {
-                        HabilitarCamposEntrada(true);
-                        txtJustificativaEntrada.Focus();
-                        DateTime HoraAtualServidor = Ambiente.RetornarHoraServidor();
-                        DataEntrada.Text = HoraAtualServidor.ToString("HH:mm");
-                        return;
-                    }
-
-                    if (UsuarioEncotrado == true && DadosPonto != null && DadosPonto.DataSaidaAlmoco == null)
-                    {
-                        txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
-                        DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
-                        HabilitarCamposSaidaAlmoco(true);
-                        txtJustificativaSaidaAlmoco.Focus();
-                        DateTime HoraAtualServidor = Ambiente.RetornarHoraServidor();
-                        DataSaidaAlmoco.Text = HoraAtualServidor.ToString("HH:mm");
-                        return;
-                    }
-
-                    if (UsuarioEncotrado == true && DadosPonto != null && DadosPonto.DataSaidaAlmoco != null && DadosPonto.DataEntradaAlmoco == null)
-                    {
-                        txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
-                        txtJustificativaSaidaAlmoco.Text = DadosPonto.JustificativaSaidaAlmoco;
-                        DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
-                        DataSaidaAlmoco.Text = DadosPonto.DataSaidaAlmoco.Value.ToString("HH:mm");
-                        HabilitarCamposEntradaAlmoco(true);
-                        txtJustificativaEntradaAlmoco.Focus();
-                        DateTime HoraAtualServidor = Ambiente.RetornarHoraServidor();
-                        DataEntradaAlmoco.Text = HoraAtualServidor.ToString("HH:mm");
-                        return;
-                    }
-
-                    if (UsuarioEncotrado == true && DadosPonto != null && DadosPonto.DataSaidaAlmoco != null && DadosPonto.DataEntradaAlmoco != null && DadosPonto.DataSaida == null)
-                    {
-                        txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
-                        txtJustificativaSaidaAlmoco.Text = DadosPonto.JustificativaSaidaAlmoco;
-                        txtJustificativaEntradaAlmoco.Text = DadosPonto.JustificativaEntradaAlmoco;
-                        DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
-                        DataSaidaAlmoco.Text = DadosPonto.DataSaidaAlmoco.Value.ToString("HH:mm");
-                        DataEntradaAlmoco.Text = DadosPonto.DataEntradaAlmoco.Value.ToString("HH:mm");
-                        HabilitarCamposSaida(true);
-                        txtJustificativaSaida.Focus();
-                        DateTime HoraAtualServidor = Ambiente.RetornarHoraServidor();
-                        DataSaida.Text = HoraAtualServidor.ToString("HH:mm");
-                        return;
-                    }
-                    else
-
-                    txtJustificativaEntrada.Text = DadosPonto.JustificativaEntrada;
-                    txtJustificativaSaidaAlmoco.Text = DadosPonto.JustificativaSaidaAlmoco;
-                    txtJustificativaEntradaAlmoco.Text = DadosPonto.JustificativaEntradaAlmoco;
-                    txtJustificativaSaida.Text = DadosPonto.JustificativaSaida;
-                    DataEntrada.Text = DadosPonto.DataEntrada.ToString("HH:mm");
-                    DataSaidaAlmoco.Text = DadosPonto.DataSaidaAlmoco.Value.ToString("HH:mm");
-                    DataEntradaAlmoco.Text = DadosPonto.DataEntradaAlmoco.Value.ToString("HH:mm");
-                    DataSaida.Text = DadosPonto.DataSaida.Value.ToString("HH:mm");
-                    HabilitarCamposFinal(true);
-                    MessageBox.Show("Ponto já lançado", "Aviso");
-                    txtNome.Clear();
-                    txtSenha.Clear();
-                    txtJustificativaEntrada.Clear();
-                    txtJustificativaSaidaAlmoco.Clear();
-                    txtJustificativaEntradaAlmoco.Clear();
-                    txtJustificativaSaida.Clear();
-                    DataEntrada.Clear();
-                    DataEntradaAlmoco.Clear();
-                    DataSaidaAlmoco.Clear();
-                    DataSaida.Clear();
-                    txtSenha.Focus();
-                    HabilitarCamposRetorno(true);
-                    return;*/
-                }
-            }
-
-            if (e.KeyCode == Keys.F10)
-            {
-                cmdConfirmar.PerformClick();
+                MessageBox.Show("Falha ao gravar dados.\n\n" + pEx.Message, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -163,14 +174,7 @@ namespace Ponto
                 LimparCampos();
                 txtSenha.Focus();
             }
-            if (e.KeyCode == Keys.F10)
-            {
-                LancarConfirmacaoPonto();
-                MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LimparCampos();
-                Close();
-            }
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.F10 || e.KeyCode == Keys.Enter)
             {
                 LancarConfirmacaoPonto();
                 MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -186,16 +190,8 @@ namespace Ponto
                 LimparCampos();
                 txtSenha.Focus();
             }
-            if (e.KeyCode == Keys.F10)
+            if (e.KeyCode == Keys.F10 || e.KeyCode == Keys.Enter)
             {
-                //cmdConfirmar.PerformClick();
-                LancarConfirmacaoPonto();
-                MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Close();
-            }
-            if (e.KeyCode == Keys.Enter)
-            {
-                //cmdConfirmar.PerformClick();
                 LancarConfirmacaoPonto();
                 MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
@@ -209,16 +205,9 @@ namespace Ponto
                 LimparCampos();
                 txtSenha.Focus();
             }
-            if (e.KeyCode == Keys.F10)
+
+            if (e.KeyCode == Keys.F10 || e.KeyCode == Keys.Enter)
             {
-                //cmdConfirmar.PerformClick();
-                LancarConfirmacaoPonto();
-                MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Close();
-            }
-            if (e.KeyCode == Keys.Enter)
-            {
-                //cmdConfirmar.PerformClick();
                 LancarConfirmacaoPonto();
                 MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
@@ -232,16 +221,9 @@ namespace Ponto
                 LimparCampos();
                 txtSenha.Focus();
             }
-            if (e.KeyCode == Keys.F10)
+
+            if (e.KeyCode == Keys.F10 || e.KeyCode == Keys.Enter)
             {
-                //cmdConfirmar.PerformClick();
-                LancarConfirmacaoPonto();
-                MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Close();
-            }
-            if (e.KeyCode == Keys.Enter)
-            {
-                //cmdConfirmar.PerformClick();
                 LancarConfirmacaoPonto();
                 MessageBox.Show("Ponto Lançado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
@@ -251,26 +233,20 @@ namespace Ponto
         private void LancarConfirmacaoPonto()
         {
             try
-            {/*
-                var Justificativa = new PontoViewModel();
+            {
+                using (var Serv = new AppServiceFactory())
+                {
+                    var Justificativa = new PontoViewModel();
 
-                string JustificativaLancada = "";
+                    string JustificativaLancada = "";
 
-                if (txtJustificativaEntrada.Enabled == true) JustificativaLancada = txtJustificativaEntrada.Text.Trim();
-                if (txtJustificativaEntradaAlmoco.Enabled == true) JustificativaLancada = txtJustificativaEntradaAlmoco.Text.Trim();
-                if (txtJustificativaSaida.Enabled == true) JustificativaLancada = txtJustificativaSaida.Text.Trim();
-                if (txtJustificativaSaidaAlmoco.Enabled == true) JustificativaLancada = txtJustificativaSaidaAlmoco.Text.Trim();
+                    if (txtJustificativaEntrada.Enabled == true) JustificativaLancada = txtJustificativaEntrada.Text.Trim();
+                    if (txtJustificativaEntradaAlmoco.Enabled == true) JustificativaLancada = txtJustificativaEntradaAlmoco.Text.Trim();
+                    if (txtJustificativaSaida.Enabled == true) JustificativaLancada = txtJustificativaSaida.Text.Trim();
+                    if (txtJustificativaSaidaAlmoco.Enabled == true) JustificativaLancada = txtJustificativaSaidaAlmoco.Text.Trim();
 
-                var P = new PontoRepository();
-                var pCodigo = new UsuarioViewModel();
-                var pJustificativa = new UsuarioViewModel();
-                pJustificativa.Justificativa = JustificativaLancada;
-                var Senha = txtSenha.Text.Trim();
-
-                int tsenha = Int32.Parse(Senha);
-                pCodigo.Codigo = tsenha;
-
-                P.LancarPonto(pCodigo, pJustificativa);*/
+                    Serv.PontoRep().LancarPonto(txtSenha.Text.Trim(), JustificativaLancada);
+                }
             }
             catch (Exception pEx)
             {

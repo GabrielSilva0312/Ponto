@@ -1,25 +1,45 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
+using Ponto.Infra.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ponto.Infra.ViewModel
+namespace Ponto.Infra
 {
     public class Ambiente
     {
+        public static TransactionRepositoryBase TransactionRepositoryBase;
+        public static MySqlConnection CN;
         public static MySqlTransaction Trans;
-        protected MySqlTransaction _Trans = Ambiente.Trans;
-        protected MySqlConnection _CN;
+        public static string ConnectionStringBD;
 
-        public DateTime RetornarHoraServidor()
+        public static MySqlConnection ObterConexao()
         {
-            string SQL = "SELECT CURRENT_TIMESTAMP AS Hora";
-            DateTime Hora = _CN.Query<DateTime>(SQL.ToString(), null, _Trans).SingleOrDefault();
+            if (CN == null)
+            {
+                CN = new MySqlConnection(ConnectionStringBD);
+                try
+                {
+                    CN.Open();
+                }
+                catch (Exception pEx)
+                {
+                    throw new Exception("Falha na conexão com o banco de dados.\n\n" + pEx.Message);
+                }
+            }
+            else
+            {
+                if (!CN.Ping())
+                {
+                    CN = new MySqlConnection(ConnectionStringBD);
+                    CN.Open();
+                }
+            }
 
-            return Hora;
+            return CN;
         }
     }
 }

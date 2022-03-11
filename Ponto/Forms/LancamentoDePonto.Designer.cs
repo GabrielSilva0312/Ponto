@@ -363,29 +363,31 @@
             // 
             // cmdSair
             // 
+            this.cmdSair.BackColor = System.Drawing.Color.White;
             this.cmdSair.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdSair.Location = new System.Drawing.Point(362, 677);
             this.cmdSair.Name = "cmdSair";
             this.cmdSair.Size = new System.Drawing.Size(219, 36);
             this.cmdSair.TabIndex = 3;
             this.cmdSair.Text = "Sair";
-            this.cmdSair.UseVisualStyleBackColor = true;
+            this.cmdSair.UseVisualStyleBackColor = false;
             // 
             // cmdConfirmar
             // 
+            this.cmdConfirmar.BackColor = System.Drawing.Color.White;
             this.cmdConfirmar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdConfirmar.Location = new System.Drawing.Point(35, 677);
             this.cmdConfirmar.Name = "cmdConfirmar";
             this.cmdConfirmar.Size = new System.Drawing.Size(220, 36);
             this.cmdConfirmar.TabIndex = 2;
             this.cmdConfirmar.Text = "Confirmar (F10)";
-            this.cmdConfirmar.UseVisualStyleBackColor = true;
+            this.cmdConfirmar.UseVisualStyleBackColor = false;
             // 
             // LancamentoDePonto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(235)))), ((int)(((byte)(247)))));
+            this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(614, 722);
             this.Controls.Add(this.cmdSair);
             this.Controls.Add(this.cmdConfirmar);
@@ -394,6 +396,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LancamentoDePonto";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ponto";
             this.Load += new System.EventHandler(this.LancamentoDePonto_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LancamentoDePonto_KeyDown);
