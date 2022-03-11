@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Ponto
 {
-    public partial class Form1 : Form
+    public partial class LancamentoDePonto : Form
     {
-        public Form1()
+        public LancamentoDePonto()
         {
             InitializeComponent();
         }
