@@ -25,7 +25,7 @@ namespace Ponto.Infra.ViewModel
         public DateTime DataFinal { get; set; }
     }
 
-    public class ClienteBuscaViewModel
+    public class UsuarioBuscaViewModel
     {
         public int Id { get; set; }
         public string Codigo { get; set; }

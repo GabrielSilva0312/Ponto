@@ -16,6 +16,11 @@ namespace Ponto.Infra
         public static MySqlTransaction Trans;
         public static string ConnectionStringBD;
 
+        public static void TestarConexao()
+        {
+            var Conexao = ObterConexao();
+        }
+
         public static MySqlConnection ObterConexao()
         {
             if (CN == null)

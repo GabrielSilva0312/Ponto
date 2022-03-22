@@ -363,7 +363,7 @@
             // 
             // cmdSair
             // 
-            this.cmdSair.BackColor = System.Drawing.Color.White;
+            this.cmdSair.BackColor = System.Drawing.SystemColors.Control;
             this.cmdSair.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdSair.Location = new System.Drawing.Point(362, 677);
             this.cmdSair.Name = "cmdSair";
@@ -374,7 +374,7 @@
             // 
             // cmdConfirmar
             // 
-            this.cmdConfirmar.BackColor = System.Drawing.Color.White;
+            this.cmdConfirmar.BackColor = System.Drawing.SystemColors.Control;
             this.cmdConfirmar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdConfirmar.Location = new System.Drawing.Point(35, 677);
             this.cmdConfirmar.Name = "cmdConfirmar";
@@ -387,12 +387,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Silver;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(614, 722);
             this.Controls.Add(this.cmdSair);
             this.Controls.Add(this.cmdConfirmar);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.grpGeral);
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LancamentoDePonto";

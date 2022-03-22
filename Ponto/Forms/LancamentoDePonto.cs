@@ -1,4 +1,5 @@
-﻿using Ponto.Infra;
+﻿using Ponto.Forms;
+using Ponto.Infra;
 using Ponto.Infra.Repository;
 using Ponto.Infra.ViewModel;
 using System;
@@ -32,14 +33,10 @@ namespace Ponto
                 using (var Serv = new AppServiceFactory())
                 {
                     if (e.KeyCode == Keys.Escape)
-                    {
                         Close();
-                    }
 
                     if (e.KeyCode == Keys.F2)
-                    {
-                        //new CadastrodeColaborador().ShowDialog();
-                    }
+                        new FrmCadastroDeColaborador().ShowDialog();
 
                     if (e.KeyCode == Keys.Enter)
                     {
@@ -155,9 +152,7 @@ namespace Ponto
                     }
 
                     if (e.KeyCode == Keys.F10)
-                    {
                         cmdConfirmar.PerformClick();
-                    }
                 }
             }
             catch (Exception pEx)

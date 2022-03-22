@@ -92,6 +92,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FrmCadastroDeColaborador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmCadastroDeColaborador.Designer.cs">
+      <DependentUpon>FrmCadastroDeColaborador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmIncluirAlterarColaborador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmIncluirAlterarColaborador.Designer.cs">
+      <DependentUpon>FrmIncluirAlterarColaborador.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\LancamentoDePonto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +119,12 @@
     <Compile Include="Infra\ViewModel\UsuarioViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FrmCadastroDeColaborador.resx">
+      <DependentUpon>FrmCadastroDeColaborador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmIncluirAlterarColaborador.resx">
+      <DependentUpon>FrmIncluirAlterarColaborador.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\LancamentoDePonto.resx">
       <DependentUpon>LancamentoDePonto.cs</DependentUpon>
     </EmbeddedResource>
