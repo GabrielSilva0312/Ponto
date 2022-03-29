@@ -93,5 +93,75 @@ namespace Ponto.Infra.Repository
                 Ambiente.CN.Execute(SQL, new { DataSaida = HoraAtualServidor, JustificativaSaida = pJustificativa, Id = DadosPonto.Id });
             }
         }
+
+        public List<PontoViewModel> RetornarLancamentoPonto(PontoViewModel pDados)
+        {
+            var SQL = "SELECT * FROM Ponto WHERE DATE(DataEntrada) BETWEEN @DataInicial AND @DataFinal";
+
+            if (!string.IsNullOrWhiteSpace(pDados.Nome))
+                SQL += " AND Nome = @Nome";
+
+            var Data = Ambiente.CN.Query<PontoViewModel>(SQL, new { DataInicial = pDados.DataInicial.Date, DataFinal = pDados.DataFinal.Date, Nome = pDados.Nome }).ToList();
+
+            return Data;
+        }
+
+        public List<PontoImpressaoViewModel> RetornarLancamentoPontoRelatorio(int pAno, int pMes)
+        {
+            var SQL = "SELECT * FROM Ponto P INNER JOIN Usuario U ON U.Id = P.UsuarioId WHERE YEAR(P.DataEntrada) = @Ano AND MONTH(P.DataEntrada) = @Mes " +
+                " ORDER BY P.UsuarioId, P.DataEntrada";
+
+            var Retorno = new List<PontoImpressaoViewModel>();
+
+            int DiasMes = DateTime.DaysInMonth(pAno, pMes);
+
+            var Data = Ambiente.CN.Query<PontoImpressaoViewModel>(SQL, new { Ano = pAno, Mes = pMes }).ToList();
+
+            var ListaUsuarios = Data.Select(d => d.UsuarioId).Distinct().ToList();
+
+            var PrimeiroDiaMes = new DateTime(pAno, pMes, 1);
+            var UltimoDiaMes = PrimeiroDiaMes.AddMonths(1).AddDays(-1);
+
+            foreach (var IdUsuario in ListaUsuarios)
+            {
+                var ListaPonto = Data.Where(d => d.UsuarioId == IdUsuario).ToList();
+                var DadosUsuarioPonto = new UsuarioRepository(this).RetornarDadosUsuarioPorId(IdUsuario);
+
+                for (int I = 1; I <= DiasMes; I++)
+                {
+                    var DadosDiaPontoLancado = ListaPonto.Where(d => d.DataEntrada.Day == I).SingleOrDefault();
+                    if (DadosDiaPontoLancado == null)
+                        DadosDiaPontoLancado = new ViewModel.PontoImpressaoViewModel()
+                        {
+                            DataEntrada = new DateTime(pAno, pMes, I),
+                            UsuarioId = IdUsuario,
+                            Codigo = DadosUsuarioPonto.Codigo.ToString(),
+                            Nome = DadosUsuarioPonto.Nome,
+                            Funcao = DadosUsuarioPonto.Funcao,
+                            DataAdmissao = DadosUsuarioPonto.DataAdmissao,
+                            CTPS = DadosUsuarioPonto.CTPS,
+                            Entrada = DadosUsuarioPonto.Entrada,
+                            Saida = DadosUsuarioPonto.Saida,
+                            EntradaAlmoco = DadosUsuarioPonto.EntradaAlmoco,
+                            SaidaAlmoco = DadosUsuarioPonto.SaidaAlmoco
+                        };
+
+                    DadosDiaPontoLancado.DataInicial = PrimeiroDiaMes;
+                    DadosDiaPontoLancado.DataFinal = UltimoDiaMes;
+
+                    Retorno.Add(DadosDiaPontoLancado);
+                }
+            }
+            return Retorno;
+        }
+
+        public PontoViewModel RetornarDadosPonto(PontoViewModel pDados)
+        {
+            var SQL = "SELECT * FROM Ponto WHERE Id = @Id";
+
+            var Data = Ambiente.CN.Query<PontoViewModel>(SQL, new { Id = pDados.Id }).SingleOrDefault();
+
+            return Data;
+        }
     }
 }

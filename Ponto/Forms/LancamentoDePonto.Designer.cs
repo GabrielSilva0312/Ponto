@@ -56,6 +56,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmdSair = new System.Windows.Forms.Button();
             this.cmdConfirmar = new System.Windows.Forms.Button();
+            this.cmdRelatorio = new System.Windows.Forms.Button();
             this.grpGeral.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -382,6 +383,18 @@
             this.cmdConfirmar.TabIndex = 2;
             this.cmdConfirmar.Text = "Confirmar (F10)";
             this.cmdConfirmar.UseVisualStyleBackColor = false;
+            this.cmdConfirmar.Click += new System.EventHandler(this.cmdConfirmar_Click);
+            // 
+            // cmdRelatorio
+            // 
+            this.cmdRelatorio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdRelatorio.Location = new System.Drawing.Point(477, 21);
+            this.cmdRelatorio.Name = "cmdRelatorio";
+            this.cmdRelatorio.Size = new System.Drawing.Size(104, 26);
+            this.cmdRelatorio.TabIndex = 33;
+            this.cmdRelatorio.Text = "Relatório";
+            this.cmdRelatorio.UseVisualStyleBackColor = true;
+            this.cmdRelatorio.Click += new System.EventHandler(this.cmdRelatorio_Click);
             // 
             // LancamentoDePonto
             // 
@@ -389,6 +402,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(614, 722);
+            this.Controls.Add(this.cmdRelatorio);
             this.Controls.Add(this.cmdSair);
             this.Controls.Add(this.cmdConfirmar);
             this.Controls.Add(this.label5);
@@ -438,6 +452,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button cmdSair;
         private System.Windows.Forms.Button cmdConfirmar;
+        private System.Windows.Forms.Button cmdRelatorio;
     }
 }
 

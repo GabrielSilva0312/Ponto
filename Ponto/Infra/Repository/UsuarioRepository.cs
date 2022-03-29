@@ -77,5 +77,23 @@ namespace Ponto.Infra.Repository
                 Ambiente.CN.Execute(SQL, pUsuario);
             }
         }
+
+        public bool RetornarSeSenhaExiste(string pSenha)
+        {
+            var SQL = "Select * FROM Senha WHERE Senha = @Senha";
+
+            var data = Ambiente.CN.Query<bool>(SQL.ToString(), new { Senha = pSenha }).SingleOrDefault();
+
+            return data;
+        }
+
+        public List<UsuarioViewModel> ConsultarUsuarios()
+        {
+            string SQL = "SELECT * FROM Usuario ORDER By Nome";
+
+            var Data = Ambiente.CN.Query<UsuarioViewModel>(SQL).ToList();
+
+            return Data;
+        }
     }
 }

@@ -353,5 +353,14 @@ namespace Ponto
             if (pedicao)
                 txtSenha.Focus();
         }
+
+        private void cmdRelatorio_Click(object sender, EventArgs e)
+        {
+            var Frm = new FrmSenha().ShowDialog();
+        }
+
+        private void cmdConfirmar_Click(object sender, EventArgs e)
+        {
+        }
     }
 }
