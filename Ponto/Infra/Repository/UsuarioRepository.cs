@@ -3,6 +3,7 @@ using Ponto.Infra.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,15 @@ namespace Ponto.Infra.Repository
         public UsuarioViewModel RetornarDadosUsuario(string Codigo)
         {
             string SQL = "SELECT * FROM Usuario where Codigo = " + Codigo;
+
+            var Dados = _CN.Query<UsuarioViewModel>(SQL, null, _Trans).SingleOrDefault();
+
+            return Dados;
+        }
+
+        public UsuarioViewModel RetornarDadosUsuarioPeloNome(string pNome)
+        {
+            string SQL = "SELECT * FROM Usuario where Nome = " + pNome;
 
             var Dados = _CN.Query<UsuarioViewModel>(SQL, null, _Trans).SingleOrDefault();
 
@@ -94,6 +104,29 @@ namespace Ponto.Infra.Repository
             var Data = Ambiente.CN.Query<UsuarioViewModel>(SQL).ToList();
 
             return Data;
+        }
+
+        public List<UsuarioViewModel> RetornarFuncionarioParaCombo(bool pSelecione = true)
+        {
+            var SQL = "SELECT * FROM Usuario WHERE Ativo = 1 ORDER BY Nome";
+
+            var data = Ambiente.CN.Query<UsuarioViewModel>(SQL.ToString(), new { Id = pSelecione }).ToList();
+
+            if (pSelecione)
+                data.Insert(0, new UsuarioViewModel() { Id = 0, Nome = "Selecione...", Ativo = true });
+
+            return data;
+        }
+
+        public string RetornarNomeMaquina()
+        {
+            return Environment.MachineName;
+        }
+
+        public string RetonarIP()
+        {
+            IPAddress[] IP = Dns.GetHostAddresses(Dns.GetHostName());
+            return IP[1].ToString();
         }
     }
 }

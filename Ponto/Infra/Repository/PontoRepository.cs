@@ -163,5 +163,35 @@ namespace Ponto.Infra.Repository
 
             return Data;
         }
+
+        public void AjustarPonto(PontoViewModel pDados)
+        {
+            string SQL = "UPDATE Ponto SET DataEntrada = @DataEntrada, DataSaidaAlmoco = @DataSaidaAlmoco, DataEntradaAlmoco = @DataEntradaAlmoco, DataSaida = @DataSaida " +
+                              "WHERE Id = @Id";
+
+            Ambiente.CN.Execute(SQL, new { DataEntrada = pDados.DataEntrada, DataEntradaAlmoco = pDados.DataEntradaAlmoco, DataSaidaAlmoco = pDados.DataSaidaAlmoco, DataSaida = pDados.DataSaida, Id = pDados.Id });
+        }
+
+        public bool RetornarLancamentoDePonto(int FuncionarioId, DateTime DataLancamento)
+        {
+            string SQL = "SELECT * FROM Ponto WHERE UsuarioId = " + FuncionarioId + " AND DATE(DataEntrada) = @DataEntrada";
+
+            var data = Ambiente.CN.Query<PontoViewModel>(SQL, new { UsuarioId = FuncionarioId, DataEntrada = DataLancamento.Date }).SingleOrDefault();
+
+            if (data == null)
+                return true;
+            else
+                return false;
+        }
+
+        public void LancarPontoManual(PontoViewModel pDados)
+        {
+            string SQL = "INSERT INTO Ponto (Nome, UsuarioId, DataEntrada, DataSaidaAlmoco, DataEntradaAlmoco, DataSaida, " +
+                    " JustificativaEntrada, JustificativaSaidaAlmoco, JustificativaEntradaAlmoco, JustificativaSaida, NomeMaquina, IP)" +
+                    " VALUES (@Nome, @UsuarioId, @DataEntrada, @DataSaidaAlmoco, @DataEntradaAlmoco, @DataSaida, " +
+                    " @JustificativaEntrada, @JustificativaSaidaAlmoco, @JustificativaEntradaAlmoco, @JustificativaSaida, @NomeMaquina, @IP)";
+
+            Ambiente.CN.Execute(SQL, pDados);
+        }
     }
 }

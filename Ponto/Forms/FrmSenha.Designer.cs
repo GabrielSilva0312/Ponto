@@ -88,6 +88,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(308, 142);
             this.Controls.Add(this.grpGeral);
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(324, 181);
             this.MinimizeBox = false;
@@ -96,6 +97,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Senha";
             this.Load += new System.EventHandler(this.FrmSenha_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmSenha_KeyDown);
             this.grpGeral.ResumeLayout(false);
             this.grpGeral.PerformLayout();
             this.ResumeLayout(false);

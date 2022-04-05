@@ -41,5 +41,10 @@ namespace Ponto.Infra
         {
             return new UsuarioRepository(_RepositoryBase);
         }
+
+        public ExportarParaExcelRepository ExcelRep()
+        {
+            return new ExportarParaExcelRepository(_RepositoryBase);
+        }
     }
 }

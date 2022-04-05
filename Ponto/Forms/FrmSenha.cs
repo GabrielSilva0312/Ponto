@@ -40,8 +40,16 @@ namespace Ponto.Forms
                 else
                 {
                     Close();
-                    //new Relatorio().ShowDialog();
+                    new FrmRelatorio().ShowDialog();
                 }
+            }
+        }
+
+        private void FrmSenha_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                cmdConfirmar.PerformClick();
             }
         }
     }

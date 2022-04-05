@@ -200,7 +200,6 @@ namespace Ponto.Forms
             using (var Serv = new AppServiceFactory())
             {
                 var Usuario = new UsuarioViewModel();
-                //string BuscaUsuario = Usuario.Nome;
 
                 var DadosPonto = Serv.PontoRep().RetornarLancamentoPontoRelatorio(txtDataFinal.Value.Year, txtDataFinal.Value.Month);
 

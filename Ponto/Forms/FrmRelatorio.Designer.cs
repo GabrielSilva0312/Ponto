@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.grpGeral = new System.Windows.Forms.GroupBox();
+            this.GridLancamento = new System.Windows.Forms.DataGridView();
+            this.GridUsuarios = new System.Windows.Forms.DataGridView();
             this.cmdExportarParaExcel = new System.Windows.Forms.Button();
             this.cmdRelatorio = new System.Windows.Forms.Button();
             this.cmdSair = new System.Windows.Forms.Button();
             this.cmdPesquisar = new System.Windows.Forms.Button();
-            this.GridUsuarios = new System.Windows.Forms.DataGridView();
             this.cmdLancamentoManual = new System.Windows.Forms.Button();
             this.cmdAjustarLancamento = new System.Windows.Forms.Button();
             this.txtDataFinal = new System.Windows.Forms.DateTimePicker();
@@ -41,10 +42,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtDataInicial = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
-            this.GridLancamento = new System.Windows.Forms.DataGridView();
             this.grpGeral.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.GridUsuarios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridLancamento)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GridUsuarios)).BeginInit();
             this.SuspendLayout();
             // 
             // grpGeral
@@ -62,6 +62,30 @@
             this.grpGeral.Size = new System.Drawing.Size(1110, 478);
             this.grpGeral.TabIndex = 3;
             this.grpGeral.TabStop = false;
+            // 
+            // GridLancamento
+            // 
+            this.GridLancamento.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GridLancamento.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.GridLancamento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.GridLancamento.Location = new System.Drawing.Point(205, 15);
+            this.GridLancamento.Name = "GridLancamento";
+            this.GridLancamento.Size = new System.Drawing.Size(898, 445);
+            this.GridLancamento.TabIndex = 11;
+            // 
+            // GridUsuarios
+            // 
+            this.GridUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.GridUsuarios.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.GridUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.GridUsuarios.Location = new System.Drawing.Point(7, 15);
+            this.GridUsuarios.Name = "GridUsuarios";
+            this.GridUsuarios.Size = new System.Drawing.Size(178, 445);
+            this.GridUsuarios.TabIndex = 10;
+            this.GridUsuarios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridUsuarios_CellClick);
             // 
             // cmdExportarParaExcel
             // 
@@ -111,21 +135,10 @@
             this.cmdPesquisar.UseVisualStyleBackColor = true;
             this.cmdPesquisar.Click += new System.EventHandler(this.cmdPesquisar_Click);
             // 
-            // GridUsuarios
-            // 
-            this.GridUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.GridUsuarios.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.GridUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.GridUsuarios.Location = new System.Drawing.Point(7, 15);
-            this.GridUsuarios.Name = "GridUsuarios";
-            this.GridUsuarios.Size = new System.Drawing.Size(178, 445);
-            this.GridUsuarios.TabIndex = 10;
-            this.GridUsuarios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridUsuarios_CellClick);
-            // 
             // cmdLancamentoManual
             // 
             this.cmdLancamentoManual.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdLancamentoManual.Enabled = false;
             this.cmdLancamentoManual.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdLancamentoManual.Location = new System.Drawing.Point(918, 6);
             this.cmdLancamentoManual.Name = "cmdLancamentoManual";
@@ -138,6 +151,7 @@
             // cmdAjustarLancamento
             // 
             this.cmdAjustarLancamento.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdAjustarLancamento.Enabled = false;
             this.cmdAjustarLancamento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdAjustarLancamento.Location = new System.Drawing.Point(687, 6);
             this.cmdAjustarLancamento.Name = "cmdAjustarLancamento";
@@ -199,18 +213,6 @@
             this.label1.TabIndex = 19;
             this.label1.Text = "Usuários:";
             // 
-            // GridLancamento
-            // 
-            this.GridLancamento.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GridLancamento.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.GridLancamento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.GridLancamento.Location = new System.Drawing.Point(205, 15);
-            this.GridLancamento.Name = "GridLancamento";
-            this.GridLancamento.Size = new System.Drawing.Size(898, 445);
-            this.GridLancamento.TabIndex = 11;
-            // 
             // FrmRelatorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -231,10 +233,11 @@
             this.MinimumSize = new System.Drawing.Size(1152, 615);
             this.Name = "FrmRelatorio";
             this.Text = "Relatório";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmRelatorio_Load);
             this.grpGeral.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.GridUsuarios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridLancamento)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.GridUsuarios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
